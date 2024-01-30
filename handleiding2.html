@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerBI Dashboard Manual</title>
+    <style>
+        #dashboard {
+            position: relative;
+        }
+
+        #explanation {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            display: none;
+            font-family: arial;
+            font-size: 9pt;
+        }
+
+        p.explanationText{
+            font-family: arial;
+            font-size: 8pt;
+        }
+    </style>
+</head>
+<body>
+
+<div id="dashboard">
+    <img src="fte_contractueel.png" alt="PowerBI Dashboard" id="dashboardImage">
+
+<!--    <div id="explanation">-->
+<!--        &lt;!&ndash;<p id="explanationText">Hover over a visual for explanation</p>&ndash;&gt;-->
+<!--    </div>-->
+</div>
+<div id="tekstvak"><p class=explanationText" id="explanationText">tekstvak</p></div>
+
+<script>
+    var dashboardImage = document.getElementById('dashboardImage');
+    var explanationDiv = document.getElementById('tekstvak');
+    var explanationText = document.getElementById('explanationText');
+
+    dashboardImage.addEventListener('mousemove', function(event) {
+        var rect = dashboardImage.getBoundingClientRect();
+        var x = event.clientX - rect.left;
+        var y = event.clientY - rect.top;
+
+        // Use x, y coordinates to determine which visual is being hovered over
+        var visualId = getVisualId(x, y); // You need to implement this function
+        var explanation = getExplanationText(visualId); // You need to implement this function
+        showExplanation(explanation, x, y);
+    });
+
+    dashboardImage.addEventListener('mouseout', function() {
+        hideExplanation();
+    });
+
+    // Function to determine the visual ID based on the coordinates
+function getVisualId(x, y) {
+    var imageWidth = dashboardImage.width;
+    var imageHeight = dashboardImage.height;
+
+    if (x >= 0 && x <= 150 && y >= 0 && y <= 90) {
+        return "WIJ logo";
+    } else if (x > 150 && x <= 295 && y > 0 && y <= 90) {
+        return "Datum select";
+    } else if (x > 295 && x <= 445 && y > 0 && y <= 90) {
+        return "Contract type select";
+    } else if (x > 445 && x <= 590 && y > 0 && y <= 90) {
+        return "Dienstbetrekking select";
+    } else if (x > 590 && x <= 740 && y > 0 && y <= 90) {
+        return "Manager select";
+    } else if (x > 740 && x <= 890 && y > 0 && y <= 90) {
+        return "Kostenplaatssoort select";
+    } else if (x >= 0 && x <= 150 && y > 90 && y <= 195) {
+        return "KPI FTE";
+    } else if (x >= 0 && x <= 150 && y > 195 && y <= 300) {
+        return "KPI headcount";
+    } else if (x >= 0 && x <= 150 && y > 300 && y <= 560) {
+        return "Filters";
+    } else if (x > 150 && x <= 395 && y > 90 && y <= 560) {
+        return "FTE per manager/kostenplaats";
+    } else if (x > 395 && x <= 850 && y > 90 && y <= 300) {
+        return "FTE per functie";
+    } else if (x > 400 && x <= 1000 && y > 300 && y <= 560) {
+        return "FTE per contracttype";
+    } else if (x > 850 && x <= 1000 && y > 90 && y <= 300) {
+        return "FTE per kostenplaatssoort";
+    } else {
+        return "Visual3";
+    }
+}
+
+// Function to get the explanation text based on the visual ID
+function getExplanationText(visualId) {
+    // Define explanations for each visual ID
+    switch (visualId) {
+        case "WIJ logo":
+            return "WIJ logo";
+        case "Datum select":
+            return "Selecteer hier een datum";
+        case "Contract type select":
+            return "Selectier hier het contract type. Voorbeelden toevoegen";
+        case "Dienstbetrekking select":
+            return "Selecteer hier een dienstbetrekking";
+        case "Manager select":
+            return "Selecteer hier een manager";
+        case "Kostenplaatssoort select":
+            return "Selectier hier een kostenplaatssoort";
+        case "KPI FTE":
+            return "Aantal FTE's";
+        case "KPI headcount":
+            return "Aantal medewerkers";
+        case "Filters":
+            return "Toegepaste filters";
+        case "FTE per manager/kostenplaats":
+            return "barchart met de verdeling van FTE's naar manager. Deze grafiek bevat een diepgan naar kostenplaats";
+        case "FTE per functie":
+            return "barchart met de verdeling van FTE's naar functie";
+        case "FTE per contracttype":
+            return "Lijngrafiek  met het aantal fte's, onderverdeeld naar bepaald-en onbepaalde tijd contracten. Deze grafiek past zich aan agv wijzigingen in selectievakken en/of selecties op andere visuals";
+        case "FTE per kostenplaatssoort":
+            return "donutchart met de verdeling van FTE's naar kostenplaatssoort. Hier wordt de verdeling tussen deelopdrachten en de structurele opdracht inzichtelijk gemaakt.";
+        default:
+            return "Beweeg met je muis over een visual voor informatie";
+    }
+}
+
+    // Function to show the explanation div at the specified coordinates
+    function showExplanation(text, x, y) {
+        explanationText.innerText = text;
+        explanationDiv.style.display = 'block';
+        explanationDiv.style.left = x + 'px';
+        explanationDiv.style.top = y + 'px';
+    }
+
+    // Function to hide the explanation div
+    function hideExplanation() {
+        explanationDiv.style.display = 'none';
+    }
+</script>
+
+</body>
+</html>
